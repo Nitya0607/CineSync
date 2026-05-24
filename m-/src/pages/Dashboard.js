@@ -10,7 +10,7 @@ function Dashboard() {
   const handleLogout = async () => {
     try {
       // Optional but recommended: Call the backend logout endpoint.
-      await fetch("https://moviesocc.onrender.com/api/auth/logout", {
+      await fetch("https://CineSync.onrender.com/api/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

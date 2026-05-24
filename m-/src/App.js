@@ -31,7 +31,7 @@ function App() {
     <Router>
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <h1 style={{ color: "blue", fontSize: "2.5rem", fontWeight: "bold", textShadow: "0 0 10px #00f, 0 0 20px #0ff" }}>
-          Movie Socials ✨
+          CineSync ✨
         </h1>
       </div>
 

@@ -14,7 +14,7 @@ export default function AdminLogin({ onLoginSuccess }) {
     setSuccess("");
 
     try {
-      const res = await fetch("https://moviesocc.onrender.com/api/auth/admin/login", {
+      const res = await fetch("https://CineSync.onrender.com/api/auth/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

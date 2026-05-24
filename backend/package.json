@@ -1,7 +1,7 @@
 {
-  "name": "movie-socials-backend",
+  "name": "cinesync-backend",
   "version": "1.0.0",
-  "description": "Backend for Movie Socials (MERN) - auth, watchlist, ratings, friends",
+  "description": "Backend for CineSync (MERN) - auth, watchlist, ratings, friends",
   "main": "server.js",
   "type": "module",
   "scripts": {

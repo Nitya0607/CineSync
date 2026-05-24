@@ -8,7 +8,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get("https://moviesocc.onrender.com/api/users/profile", {
+        const res = await axios.get("https://CineSync.onrender.com/api/users/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);

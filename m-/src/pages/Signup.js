@@ -15,7 +15,7 @@ export default function Signup() {
     setSuccess("");
 
     try {
-      const res = await fetch("https://moviesocc.onrender.com/api/auth/signup", {
+      const res = await fetch("https://CineSync.onrender.com/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),

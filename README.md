@@ -1,6 +1,6 @@
-🎬 Movie Socials
+🎬 CineSync
 
-Movie Socials is a MERN stack web application deployed on render and vercel  where users can:
+CineSync is a MERN stack web application deployed on render and vercel  where users can:
 
 🍿 Browse movies
 
@@ -37,7 +37,7 @@ Admin Features
 
 👤 Manage users
 
-here is the link :- https://moviesocc.vercel.app/
+here is the link :- https://CineSync.vercel.app/
 
 💻 Technologies Used
 
