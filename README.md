@@ -1,48 +1,63 @@
-🎬 CineSync
+# CineSync
 
-CineSync is a MERN stack web application deployed on render and vercel  where users can:
+CineSync is a full-stack MERN web application where users can browse movies, manage a personal wishlist, rate films, and connect with friends.
 
-🍿 Browse movies
+Admins can manage movies and users through a dedicated dashboard.
 
-💖 Add movies to their wishlist
+## Features
 
-⭐ Rate movies and view average ratings
+### User
+- Sign up, login, and manage profile
+- Browse and search movies
+- Add movies to wishlist
+- Rate movies and view average ratings
+- Search for users and send friend requests
+- Accept or reject friend requests
+- View friends and their wishlists
 
-👥 Connect with friends
+### Admin
+- Login as admin
+- Add, edit, and delete movies
+- Manage users
 
-Admins can manage movies and users. This project demonstrates a full-stack application with authentication, authorization, and social features.
+## Tech Stack
 
-✨ Features
-User Features
+**Frontend:** React, React Router, Axios  
+**Backend:** Node.js, Express.js, MongoDB, Mongoose  
+**Auth:** JWT, bcryptjs  
+**Other:** cors, dotenv  
 
-📝 Sign up, login, and manage profile
+## Live Demo
 
-🍿 Browse movies
+https://cinesync.vercel.app
 
-💖 Add movies to wishlist
+## Getting Started
 
-⭐ Rate movies and view average ratings
+### Prerequisites
+- Node.js
+- MongoDB
 
-🔍 Search for users and send friend requests
+### Installation
 
-✅ Accept or reject friend requests
+```bash
+git clone https://github.com/Nitya0607/CineSync.git
+cd CineSync
 
-👥 View list of friends and their wishlists
+# Install backend dependencies
+npm install
 
-Admin Features
+# Install frontend dependencies
+cd frontend
+npm install
+```
 
-🔑 Login as admin
+### Running the App
 
-➕ Add, ✏️ Edit, and ❌ Delete movies
+```bash
+# Start backend
+npm run dev
 
-👤 Manage users
-
-here is the link :- https://CineSync.vercel.app/
-
-💻 Technologies Used
-
-Frontend: React, React Router, Axios
-
-Backend: Node.js, Express.js, MongoDB, Mongoose, JWT authentication
-
-Other: bcryptjs (password hashing), cors, dotenv
+# Start frontend (open a new terminal)
+cd frontend
+npm start
+```
