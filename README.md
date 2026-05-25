@@ -29,7 +29,8 @@ Admins can manage movies and users through a dedicated dashboard.
 
 ## Live Demo
 
-https://cinesync.vercel.app
+- Frontend: https://cinesync-frontend.vercel.app
+- Backend: https://cinesync-backend-ylss.onrender.com
 
 ## Getting Started
 
