@@ -1,17 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 
-export default function AdminDashboard({ handleLogout }) { // Pass handleLogout for consistency
+export default function AdminDashboard({ handleLogout }) {
   const [movies, setMovies] = useState([]);
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [desc, setDesc] = useState("");
-  // FIX: Reading token from sessionStorage to match the login process
   const token = sessionStorage.getItem("token");
 
   const fetchMovies = useCallback(async () => {
-    if (!token) return; // Don't fetch if there's no token
+    if (!token) return;
     try {
-      const res = await fetch("https://CineSync.onrender.com/api/movies", {
+      const res = await fetch("https://cinesync.onrender.com/api/movies", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -28,13 +27,18 @@ export default function AdminDashboard({ handleLogout }) { // Pass handleLogout 
   const addMovie = async () => {
     if (!title || !genre || !desc) return;
     try {
-      const res = await fetch("https://CineSync.onrender.com/api/movies", {
+      const res = await fetch("https://cinesync.onrender.com/api/movies", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ title, genre, description: desc, releaseYear: new Date().getFullYear() }),
+        body: JSON.stringify({
+          title,
+          genre,
+          description: desc,
+          releaseYear: new Date().getFullYear(),
+        }),
       });
       if (res.ok) {
         fetchMovies();
@@ -43,8 +47,7 @@ export default function AdminDashboard({ handleLogout }) { // Pass handleLogout 
         setDesc("");
       } else {
         const errorData = await res.json();
-        console.error("Failed to add movie:", errorData.message);
-        alert(`Error: ${errorData.message}`); // Show error to admin
+        alert(errorData.message || "Failed to add movie");
       }
     } catch (err) {
       console.error(err);
@@ -53,16 +56,15 @@ export default function AdminDashboard({ handleLogout }) { // Pass handleLogout 
 
   const deleteMovie = async (id) => {
     try {
-      const res = await fetch(`https://CineSync.onrender.com/api/movies/${id}`, {
+      const res = await fetch(`https://cinesync.onrender.com/api/movies/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
-        setMovies((prevMovies) => prevMovies.filter((m) => m._id !== id));
+        setMovies((prev) => prev.filter((m) => m._id !== id));
       } else {
         const errorData = await res.json();
-        console.error("Failed to delete movie:", errorData.message);
-        alert(`Error: ${errorData.message}`);
+        alert(errorData.message || "Failed to delete movie");
       }
     } catch (err) {
       console.error(err);
@@ -70,35 +72,185 @@ export default function AdminDashboard({ handleLogout }) { // Pass handleLogout 
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h2>Admin Dashboard</h2>
-      <button onClick={handleLogout} style={{...buttonStyle, backgroundColor: '#6c757d'}}>Logout</button>
+    <div style={containerStyle}>
 
-      <div style={{ margin: "30px 0" }}>
-        <h3>Add Movie</h3>
-        <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} style={inputStyle} />
-        <input placeholder="Genre" value={genre} onChange={(e) => setGenre(e.target.value)} style={inputStyle} />
-        <input placeholder="Description" value={desc} onChange={(e) => setDesc(e.target.value)} style={inputStyle} />
-        <button onClick={addMovie} style={buttonStyle}>Add Movie</button>
+      <div style={headerStyle}>
+        <h2 style={headingStyle}>Admin Dashboard</h2>
+        <button onClick={handleLogout} style={logoutBtnStyle}>Logout</button>
       </div>
 
-      <h3>All Movies</h3>
-      <ul style={{ listStyleType: "none", padding: 0 }}>
-        {movies.length > 0 ? movies.map((m) => (
-          <li key={m._id} style={listItemStyle}>
-            <b>{m.title}</b> - {m.genre} <br />
-            {m.description} <br />
-            <i style={{ fontSize: "0.8em", color: "#666" }}>By: {m.createdBy?.username || "admin"}</i>
-            <button onClick={() => deleteMovie(m._id)} style={deleteButtonStyle}>Delete</button>
-          </li>
-        )) : <p>No movies found. Add one above!</p>}
-      </ul>
+      <div style={sectionStyle}>
+        <h3 style={sectionHeadingStyle}>Add Movie</h3>
+        <div style={formStyle}>
+          <input
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            style={inputStyle}
+          />
+          <input
+            placeholder="Genre"
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+            style={inputStyle}
+          />
+          <input
+            placeholder="Description"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            style={{ ...inputStyle, flex: 2 }}
+          />
+          <button onClick={addMovie} style={addBtnStyle}>Add</button>
+        </div>
+      </div>
+
+      <div style={sectionStyle}>
+        <h3 style={sectionHeadingStyle}>All Movies</h3>
+        {movies.length > 0 ? (
+          <div style={listStyle}>
+            {movies.map((m) => (
+              <div key={m._id} style={movieRowStyle}>
+                <div>
+                  <p style={movieTitleStyle}>{m.title}</p>
+                  <p style={movieGenreStyle}>{m.genre}</p>
+                  <p style={movieDescStyle}>{m.description}</p>
+                  <p style={movieByStyle}>Added by: {m.createdBy?.username || "admin"}</p>
+                </div>
+                <button onClick={() => deleteMovie(m._id)} style={deleteBtnStyle}>Delete</button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p style={emptyStyle}>No movies found. Add one above.</p>
+        )}
+      </div>
     </div>
   );
 }
 
-// Some basic styling to make it look cleaner
-const inputStyle = { margin: '5px', padding: '8px', width: '200px', borderRadius: '4px', border: '1px solid #ccc' };
-const buttonStyle = { margin: '5px', padding: '8px 12px', cursor: 'pointer', border: 'none', borderRadius: '4px', backgroundColor: '#007bff', color: 'white' };
-const deleteButtonStyle = { ...buttonStyle, background: '#dc3545', marginLeft: '10px' };
-const listItemStyle = { border: '1px solid #ccc', borderRadius: '5px', padding: '10px', margin: '10px auto', maxWidth: '500px' };
+const containerStyle = {
+  minHeight: "100vh",
+  backgroundColor: "#0d0d0d",
+  padding: "40px 32px",
+};
+
+const headerStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "36px",
+};
+
+const headingStyle = {
+  color: "#ffffff",
+  fontSize: "1.6rem",
+  fontWeight: "bold",
+};
+
+const logoutBtnStyle = {
+  padding: "8px 20px",
+  backgroundColor: "transparent",
+  border: "1px solid #444",
+  borderRadius: "8px",
+  color: "#888",
+  fontSize: "0.9rem",
+  cursor: "pointer",
+};
+
+const sectionStyle = {
+  marginBottom: "40px",
+};
+
+const sectionHeadingStyle = {
+  color: "#ffffff",
+  fontSize: "1.1rem",
+  fontWeight: "bold",
+  marginBottom: "16px",
+};
+
+const formStyle = {
+  display: "flex",
+  gap: "10px",
+  flexWrap: "wrap",
+  maxWidth: "900px",
+};
+
+const inputStyle = {
+  flex: 1,
+  padding: "10px 12px",
+  backgroundColor: "#1a1a1a",
+  border: "1px solid #2a2a2a",
+  borderRadius: "8px",
+  color: "#ffffff",
+  fontSize: "0.9rem",
+  minWidth: "140px",
+};
+
+const addBtnStyle = {
+  padding: "10px 24px",
+  backgroundColor: "#007BFF",
+  color: "white",
+  border: "none",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontSize: "0.9rem",
+};
+
+const listStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+  maxWidth: "900px",
+};
+
+const movieRowStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  padding: "20px",
+  backgroundColor: "#1a1a1a",
+  border: "1px solid #2a2a2a",
+  borderRadius: "10px",
+};
+
+const movieTitleStyle = {
+  color: "#ffffff",
+  fontSize: "1rem",
+  fontWeight: "bold",
+  marginBottom: "4px",
+};
+
+const movieGenreStyle = {
+  color: "#007BFF",
+  fontSize: "0.8rem",
+  textTransform: "uppercase",
+  letterSpacing: "0.5px",
+  marginBottom: "6px",
+};
+
+const movieDescStyle = {
+  color: "#aaa",
+  fontSize: "0.875rem",
+  marginBottom: "6px",
+};
+
+const movieByStyle = {
+  color: "#555",
+  fontSize: "0.8rem",
+};
+
+const deleteBtnStyle = {
+  padding: "8px 16px",
+  backgroundColor: "#dc3545",
+  color: "white",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer",
+  fontSize: "0.875rem",
+  whiteSpace: "nowrap",
+};
+
+const emptyStyle = {
+  color: "#555",
+  fontSize: "0.9rem",
+};
