@@ -2,72 +2,112 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const navigate = useNavigate();
-
-  // FIX: Using sessionStorage to ensure user is logged out when tab is closed.
   const username = sessionStorage.getItem("username");
-  const role = sessionStorage.getItem("role"); // "user" or "admin"
 
   const handleLogout = async () => {
     try {
-      // Optional but recommended: Call the backend logout endpoint.
-      await fetch("https://CineSync.onrender.com/api/auth/logout", {
+      await fetch("https://cinesync.onrender.com/api/auth/logout", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
     } catch (error) {
-      console.error("Error communicating with backend on logout:", error);
+      console.error("Logout error:", error);
     } finally {
-      // FIX: Clearing sessionStorage instead of localStorage.
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("username");
       sessionStorage.removeItem("role");
-      navigate("/"); // Redirect to the homepage
+      navigate("/");
     }
   };
 
-  const handleBack = () => {
-    navigate(-1); // Go to the previous page
-  };
+  const navItems = [
+    { label: "Movies", path: "/movies" },
+    { label: "Wishlist", path: "/wishlist" },
+    { label: "Find Users", path: "/users" },
+    { label: "Friends", path: "/friends" },
+    { label: "Friend Requests", path: "/friend-requests" },
+    { label: "Profile", path: "/profile" },
+  ];
 
   return (
-    <div style={{ textAlign: "center", marginTop: "30px" }}>
-      <h2>Welcome {username} to your Dashboard 🎥</h2>
-
-      <div style={{ margin: "20px" }}>
-        <button onClick={handleBack} style={buttonStyle}>⬅ Back</button>
-        <button onClick={handleLogout} style={buttonStyle}>Logout</button>
+    <div style={containerStyle}>
+      <div style={headerStyle}>
+        <h2 style={welcomeStyle}>Welcome back, {username}</h2>
+        <p style={subtitleStyle}>What would you like to do today?</p>
       </div>
 
-      <nav style={{ marginTop: "20px" }}>
-        <Link to="/movies"><button style={buttonStyle}>Movies</button></Link>
-        <Link to="/wishlist"><button style={buttonStyle}>Wishlist</button></Link>
-        {/* Added the "Find Users" button here */}
-        <Link to="/users"><button style={buttonStyle}>Find Users</button></Link>
-        <Link to="/friends"><button style={buttonStyle}>Friends</button></Link>
-        <Link to="/friend-requests"><button style={buttonStyle}>Friend Requests</button></Link>
-        <Link to="/profile"><button style={buttonStyle}>Profile</button></Link>
+      <div style={gridStyle}>
+        {navItems.map((item) => (
+          <Link to={item.path} key={item.path} style={cardLinkStyle}>
+            <div style={cardStyle}>
+              <span style={cardLabelStyle}>{item.label}</span>
+            </div>
+          </Link>
+        ))}
+      </div>
 
-        {/* Conditionally render the "Add Movie" button only if the user is an admin */}
-        {role === "admin" && (
-          <Link to="/movies/add"><button style={buttonStyle}>Add Movie</button></Link>
-        )}
-      </nav>
+      <button onClick={handleLogout} style={logoutStyle}>Logout</button>
     </div>
   );
 }
 
-// Consolidated and cleaned up button styles
-const buttonStyle = {
-  margin: "10px",
-  padding: "10px 20px",
-  fontSize: "1rem",
+const containerStyle = {
+  minHeight: "100vh",
+  backgroundColor: "#0d0d0d",
+  padding: "40px 32px",
+};
+
+const headerStyle = {
+  marginBottom: "36px",
+};
+
+const welcomeStyle = {
+  color: "#ffffff",
+  fontSize: "1.8rem",
+  fontWeight: "bold",
+  marginBottom: "6px",
+};
+
+const subtitleStyle = {
+  color: "#888",
+  fontSize: "0.95rem",
+};
+
+const gridStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+  gap: "16px",
+  maxWidth: "800px",
+};
+
+const cardLinkStyle = {
+  textDecoration: "none",
+};
+
+const cardStyle = {
+  backgroundColor: "#1a1a1a",
+  border: "1px solid #2a2a2a",
+  borderRadius: "10px",
+  padding: "28px 16px",
+  textAlign: "center",
   cursor: "pointer",
-  border: "none",
-  borderRadius: "6px",
-  backgroundColor: "#007BFF",
-  color: "white",
+};
+
+const cardLabelStyle = {
+  color: "#ffffff",
+  fontSize: "0.95rem",
+  fontWeight: "500",
+};
+
+const logoutStyle = {
+  marginTop: "40px",
+  padding: "10px 24px",
+  backgroundColor: "transparent",
+  border: "1px solid #444",
+  borderRadius: "8px",
+  color: "#888",
+  fontSize: "0.9rem",
+  cursor: "pointer",
 };
 
 export default Dashboard;
