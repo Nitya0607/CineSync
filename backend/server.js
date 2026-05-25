@@ -22,7 +22,7 @@ process.on("unhandledRejection", (reason, promise) => {
 app.use(express.json()); // parse application/json
 
 const allowedOrigins = [
-  "https://CineSync.vercel.app",
+  "https://cinesync-frontend.vercel.app",
   "http://localhost:3000",
 ];
 
