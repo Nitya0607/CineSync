@@ -14,7 +14,7 @@ export default function Wishlist() {
       return;
     }
     try {
-      const res = await axios.get("https://cinesync.onrender.com/api/users/profile", {
+      const res = await axios.get("https://cinesync-backend-ylss.onrender.com/api/users/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setWishlist(res.data.wishlist || []);

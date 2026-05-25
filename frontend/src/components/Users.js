@@ -15,7 +15,7 @@ export default function Users() {
       return;
     }
     try {
-      const res = await axios.get("https://cinesync.onrender.com/api/users", {
+      const res = await axios.get("https://cinesync-backend-ylss.onrender.com/api/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);
@@ -33,7 +33,7 @@ export default function Users() {
   const sendRequest = async (id) => {
     try {
       await axios.post(
-        `https://cinesync.onrender.com/api/friends/send-request/${id}`,
+        `https://cinesync-backend-ylss.onrender.com/api/friends/send-request/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -12,7 +12,7 @@ export default function Movies() {
 
   const fetchMovies = useCallback(async () => {
     try {
-      const res = await axios.get("https://cinesync.onrender.com/api/movies", {
+      const res = await axios.get("https://cinesync-backend-ylss.onrender.com/api/movies", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMovies(res.data || []);
@@ -29,7 +29,7 @@ export default function Movies() {
 
   const addToWishlist = async (movieId) => {
     try {
-      await axios.post(`https://cinesync.onrender.com/api/wishlist/${movieId}`, {}, {
+      await axios.post(`https://cinesync-backend-ylss.onrender.com/api/wishlist/${movieId}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Added to wishlist!");
@@ -46,7 +46,7 @@ export default function Movies() {
     }
     try {
       await axios.post(
-        `https://cinesync.onrender.com/api/ratings/${ratingMovie._id}/rate`,
+        `https://cinesync-backend-ylss.onrender.com/api/ratings/${ratingMovie._id}/rate`,
         { rating: currentRating, review },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -13,7 +13,7 @@ export default function AdminLogin({ onLoginSuccess }) {
     setError("");
     setSuccess("");
     try {
-      const res = await fetch("https://cinesync.onrender.com/api/auth/admin/login", {
+      const res = await fetch("https://cinesync-backend-ylss.onrender.com/api/auth/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

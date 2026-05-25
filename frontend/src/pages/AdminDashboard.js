@@ -10,7 +10,7 @@ export default function AdminDashboard({ handleLogout }) {
   const fetchMovies = useCallback(async () => {
     if (!token) return;
     try {
-      const res = await fetch("https://cinesync.onrender.com/api/movies", {
+      const res = await fetch("https://cinesync-backend-ylss.onrender.com/api/movies", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -27,7 +27,7 @@ export default function AdminDashboard({ handleLogout }) {
   const addMovie = async () => {
     if (!title || !genre || !desc) return;
     try {
-      const res = await fetch("https://cinesync.onrender.com/api/movies", {
+      const res = await fetch("https://cinesync-backend-ylss.onrender.com/api/movies", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function AdminDashboard({ handleLogout }) {
 
   const deleteMovie = async (id) => {
     try {
-      const res = await fetch(`https://cinesync.onrender.com/api/movies/${id}`, {
+      const res = await fetch(`https://cinesync-backend-ylss.onrender.com/api/movies/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

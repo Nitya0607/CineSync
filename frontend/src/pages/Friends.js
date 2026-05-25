@@ -16,7 +16,7 @@ export default function Friends() {
       return;
     }
     try {
-      const res = await axios.get("https://cinesync.onrender.com/api/friends", {
+      const res = await axios.get("https://cinesync-backend-ylss.onrender.com/api/friends", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFriends(res.data || []);
@@ -33,7 +33,7 @@ export default function Friends() {
 
   const viewWishlist = async (friendId) => {
     try {
-      const res = await axios.get(`https://cinesync.onrender.com/api/friends/${friendId}/wishlist`, {
+      const res = await axios.get(`https://cinesync-backend-ylss.onrender.com/api/friends/${friendId}/wishlist`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSelectedFriend(friends.find((f) => f._id === friendId));

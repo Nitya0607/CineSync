@@ -6,7 +6,7 @@ function Dashboard() {
 
   const handleLogout = async () => {
     try {
-      await fetch("https://cinesync.onrender.com/api/auth/logout", {
+      await fetch("https://cinesync-backend-ylss.onrender.com/api/auth/logout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });

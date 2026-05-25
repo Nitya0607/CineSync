@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://CineSync.onrender.com/api", // your backend base URL
+  baseURL: "https://cinesync-backend-ylss.onrender.com/api", // your backend base URL
 });
 
 // Add token to requests automatically

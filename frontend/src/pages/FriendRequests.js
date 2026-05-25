@@ -9,7 +9,7 @@ export default function FriendRequests() {
 
   const fetchRequests = useCallback(async () => {
     try {
-      const res = await axios.get("https://cinesync.onrender.com/api/friends/requests", {
+      const res = await axios.get("https://cinesync-backend-ylss.onrender.com/api/friends/requests", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setRequests(res.data || []);
@@ -27,7 +27,7 @@ export default function FriendRequests() {
   const handleRequest = async (fromId, action) => {
     try {
       await axios.put(
-        `https://cinesync.onrender.com/api/friends/${action}-request/${fromId}`,
+        `https://cinesync-backend-ylss.onrender.com/api/friends/${action}-request/${fromId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
