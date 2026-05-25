@@ -2,9 +2,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 
 export default function Users() {
-  // FIX: Get the token from sessionStorage to match the rest of the app
   const token = sessionStorage.getItem("token");
-
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -17,13 +15,12 @@ export default function Users() {
       return;
     }
     try {
-      const res = await axios.get("https://CineSync.onrender.com/api/users", {
+      const res = await axios.get("https://cinesync.onrender.com/api/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);
     } catch (err) {
-      console.error(err);
-      setError("Failed to fetch users. The backend might be down.");
+      setError("Failed to fetch users.");
     } finally {
       setLoading(false);
     }
@@ -35,85 +32,126 @@ export default function Users() {
 
   const sendRequest = async (id) => {
     try {
-      // NOTE: This route is different from your friends route. Ensure it's correct.
-      await axios.post(`https://CineSync.onrender.com/api/friends/send-request/${id}`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.post(
+        `https://cinesync.onrender.com/api/friends/send-request/${id}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       alert("Friend request sent!");
     } catch (err) {
       alert(err.response?.data?.message || "Error sending request");
     }
   };
 
-  const filteredUsers = users.filter(u =>
+  const filteredUsers = users.filter((u) =>
     u.username?.toLowerCase().includes(search.toLowerCase())
   );
 
+  if (loading) return <p style={{ textAlign: "center", color: "#888", marginTop: "60px" }}>Loading users...</p>;
+  if (error) return <p style={{ textAlign: "center", color: "#ff4d4d", marginTop: "60px" }}>{error}</p>;
+
   return (
     <div style={containerStyle}>
-      <h2>Find Users</h2>
+      <h2 style={headingStyle}>Find Users</h2>
+
       <input
         type="text"
         placeholder="Search by username..."
         value={search}
-        onChange={e => setSearch(e.target.value)}
+        onChange={(e) => setSearch(e.target.value)}
         style={inputStyle}
       />
-      {loading && <p>Loading users...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {!loading && !error && (
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {filteredUsers.length > 0 ? (
-            filteredUsers.map(u => (
-              <li key={u._id} style={listItemStyle}>
-                <span>{u.username} ({u.email})</span>
-                <button onClick={() => sendRequest(u._id)} style={buttonStyle}>
-                  Add Friend
-                </button>
-              </li>
-            ))
-          ) : (
-            <p>No users found.</p>
-          )}
-        </ul>
+
+      {filteredUsers.length > 0 ? (
+        <div style={listStyle}>
+          {filteredUsers.map((u) => (
+            <div key={u._id} style={userRowStyle}>
+              <div>
+                <p style={usernameStyle}>{u.username}</p>
+                <p style={emailStyle}>{u.email}</p>
+              </div>
+              <button onClick={() => sendRequest(u._id)} style={btnStyle}>
+                Add Friend
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div style={emptyStyle}>
+          <p style={{ color: "#888" }}>No users found.</p>
+        </div>
       )}
     </div>
   );
 }
 
-// Styling
 const containerStyle = {
-  textAlign: "center",
-  maxWidth: "600px",
-  margin: "20px auto",
-  padding: "20px",
-  border: "1px solid #ddd",
-  borderRadius: "8px",
-  boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+  minHeight: "100vh",
+  backgroundColor: "#0d0d0d",
+  padding: "40px 32px",
+};
+
+const headingStyle = {
+  color: "#ffffff",
+  fontSize: "1.6rem",
+  fontWeight: "bold",
+  marginBottom: "24px",
 };
 
 const inputStyle = {
-  width: "80%",
-  padding: "10px",
-  marginBottom: "20px",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  fontSize: "1rem"
+  width: "100%",
+  maxWidth: "400px",
+  padding: "10px 14px",
+  backgroundColor: "#1a1a1a",
+  border: "1px solid #2a2a2a",
+  borderRadius: "8px",
+  color: "#ffffff",
+  fontSize: "0.95rem",
+  marginBottom: "24px",
+  boxSizing: "border-box",
 };
 
-const listItemStyle = {
+const listStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+  maxWidth: "600px",
+};
+
+const userRowStyle = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "10px",
-  borderBottom: "1px solid #eee",
+  padding: "16px 20px",
+  backgroundColor: "#1a1a1a",
+  border: "1px solid #2a2a2a",
+  borderRadius: "10px",
 };
 
-const buttonStyle = {
-  padding: "8px 12px",
-  cursor: "pointer",
-  border: "none",
-  borderRadius: "4px",
+const usernameStyle = {
+  color: "#ffffff",
+  fontSize: "0.95rem",
+  fontWeight: "500",
+  marginBottom: "2px",
+};
+
+const emailStyle = {
+  color: "#666",
+  fontSize: "0.8rem",
+};
+
+const btnStyle = {
+  padding: "8px 16px",
   backgroundColor: "#28a745",
   color: "white",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer",
+  fontSize: "0.875rem",
+  whiteSpace: "nowrap",
+};
+
+const emptyStyle = {
+  textAlign: "center",
+  marginTop: "60px",
 };
